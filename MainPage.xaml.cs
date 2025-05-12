@@ -14,7 +14,13 @@
         }
         private void AddTaskBtn_Clicked(object sender, EventArgs e)
         {
-            _taskViewModel.Tasks.Add(new TaskItem { Id = _taskViewModel.Tasks.Count+1, TaskContent = TaskEntry.Text, TaskDateToDo = TaskDatePicker.Date, Status = statusName});
+            _taskViewModel.Tasks.Add(new TaskItem { Id = _taskViewModel.Tasks.Count + 1, TaskContent = TaskEntry.Text, TaskDateToDo = TaskDatePicker.Date, Status = statusName });
+            
+            Preferences.Set("Id", _taskViewModel.Tasks.Count + 1);
+            Preferences.Set("Task content", TaskEntry.Text);
+            Preferences.Set("Task Date", TaskDatePicker.Date);
+            Preferences.Set("Status", statusName);
+            
             TaskEntry.Text = string.Empty;
             TaskDatePicker.Date = DateTime.Now;
         }
@@ -23,24 +29,24 @@
         {
             var button = sender as Button;
             var taskToEdit = button.CommandParameter as TaskItem;
-            
-            if(taskToEdit != null)
+
+            if (taskToEdit != null)
             {
                 TaskEntry.Text = taskToEdit.TaskContent;
                 TaskDatePicker.Date = taskToEdit.TaskDateToDo;
-                if(taskToEdit.Status == "wykonane") { DoneCheck.IsChecked = true; statusName = "wykonane"; } 
+                if (taskToEdit.Status == "wykonane") { DoneCheck.IsChecked = true; statusName = "wykonane"; }
                 else { DoneCheck.IsChecked = false; statusName = "niewykonane"; }
                 _taskToEdit = taskToEdit;
                 SaveChangesBtn.IsVisible = true;
                 AddTaskBtn.IsEnabled = false;
             }
-            
+
         }
 
         private void DoneCheck_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             taskStatus = !taskStatus;
-            if(taskStatus == true)
+            if (taskStatus == true)
             {
                 statusName = "wykonane";
             }
@@ -55,7 +61,7 @@
             var button = sender as Button;
             var taskToRemove = button.CommandParameter as TaskItem;
 
-            if(taskToRemove != null)
+            if (taskToRemove != null)
             {
                 _taskViewModel.Tasks.Remove(taskToRemove);
             }
@@ -63,7 +69,7 @@
 
         private void SaveChangesBtn_Clicked(object sender, EventArgs e)
         {
-            if(_taskToEdit != null)
+            if (_taskToEdit != null)
             {
                 _taskToEdit.TaskContent = TaskEntry.Text;
                 _taskToEdit.TaskDateToDo = TaskDatePicker.Date;
