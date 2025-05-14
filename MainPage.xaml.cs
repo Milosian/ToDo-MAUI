@@ -15,12 +15,12 @@
         private void AddTaskBtn_Clicked(object sender, EventArgs e)
         {
             _taskViewModel.Tasks.Add(new TaskItem { Id = _taskViewModel.Tasks.Count + 1, TaskContent = TaskEntry.Text, TaskDateToDo = TaskDatePicker.Date, Status = statusName });
-            
+
             Preferences.Set("Id", _taskViewModel.Tasks.Count + 1);
             Preferences.Set("Task content", TaskEntry.Text);
             Preferences.Set("Task Date", TaskDatePicker.Date);
             Preferences.Set("Status", statusName);
-            
+
             TaskEntry.Text = string.Empty;
             TaskDatePicker.Date = DateTime.Now;
         }
